@@ -1,0 +1,28 @@
+{
+    "name": "drewdan/paypal",
+    "description": "A simple Paypal Client for the V2 API",
+    "license": "MIT",
+    "require": {
+        "laravel/framework": "^7.0.",
+        "netresearch/jsonmapper": "^v4.0.0"
+    },
+    "authors": [
+        {
+            "name": "Andrew Arscott",
+            "email": "andrew@prometheuscomputing.co.uk"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Drewdan\\Paypal\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Drewdan\\Paypal\\PaypalClientServiceProvider"
+            ]
+        }
+    }
+}
