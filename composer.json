@@ -3,7 +3,7 @@
     "description": "A simple Paypal Client for the V2 API",
     "license": "MIT",
     "require": {
-        "laravel/framework": "^7.0.",
+        "laravel/framework": "^8.0.",
         "netresearch/jsonmapper": "^v4.0.0"
     },
     "authors": [
