@@ -1,13 +1,23 @@
 # Laravel Paypal V2 Rest Client
 
-This package creates a simple RestClient to make Payments via the PayPal payment system.
+This laravel package creates an interface with the PayPal API by generating API requests using the assorted classes
+available.
 
-## Creating an Order
+I built this package, because at the time, I could not find a suitable package to do what I wanted (though this might be
+due to poor Google skills.) - so I built this.
+
+The documentation for which this package is based on can be found here: https://developer.paypal.com/docs/api/payments/v2/
+
+## Orders
+
+The orders class is the class you would use to create and capture payments from customers.
+
+### Creating an Order
 
 ```PHP
-use Drewdan\Paypal\PaypalClient;
+use Drewdan\Paypal\Services\Orders\Order;
 
-$paypalClient = new PaypalClient;
+$order = new Order;
 
 $purchaseUnits = [
 	[
@@ -26,31 +36,73 @@ $applicationContext = [
     'cancel_url' => 'https://localhost/cancel',
 ];
 
-$order = $paypalClient->createOrder($purchaseUnits, 'CAPTURE', $applicationContext);
+$paypalOrder = $order->create($purchaseUnits, 'CAPTURE', $applicationContext);
 
-return redirect($order->getLinkByRel('approve')->href);
+return redirect($paypalOrder->getLinkByRel('approve')->href);
 ```
 
-The above snippet will create a Paypal Order with a value of £12.50 and return an instance of PaypalOrder. This object
-contains a helper method to access the Paypal Links returned from the request. You can use this to redirect the user
-to paypal to make payment.
+The above snippet will create a PayPal Order with a value of £12.50 and return an instance of PaypalOrder. This object
+contains a helper method to access the PayPal Links returned from the request. You can use this to redirect the user to
+PayPal to make payment.
 
-The parameter for the application context can be found https://developer.paypal.com/docs/api/orders/v2/#definition-order_application_context
+The parameter for the application context can be
+found https://developer.paypal.com/docs/api/orders/v2/#definition-order_application_context
 
-This will authorize the payment, but not capture it. To capture a payment, you will need the Order ID which will be passed in a get request
-when the user is redirected back. You can use whatever mechanism fits your application to track this Order ID.
+This will authorize the payment, but not capture it. To capture a payment, you will need the Order ID which will be
+passed in a get request when the user is redirected back. You can use whatever mechanism fits your application to track
+this Order ID.
+
+### Capturing a Payment
 
 ```PHP
-use Drewdan\Paypal\PaypalClient;
+use Drewdan\Paypal\Services\Orders\Order;
 
-$paypalClient = new PaypalClient;
-
+$order = new Order;
 //first retrieve the order from Paypal
-$order = $paypalClient->showOrder(request()->PayerID);
+$paypalOrder = $order->show(request()->PayerID);
 
 //here you could do any validation you wish to verify the order is correct, checking the order amount etc before capturing the payment
 
-$order = $paypalClient->captureOrder($order);
+$order->capture($paypalOrder);
 ```
 
 Once this is complete, you will have captured the payment.
+
+## Captures
+
+### Refunding a captured payment
+
+After payment has been completed, you might sometimes need to refund the payment, if for example, you are unable to
+fulfil the order. The captures class has the ability to show an existing captured payment, or refund it.
+
+The refund method accepts the captureId of the first parameter, the required refund amount, which allow for partial
+refunds, a reason for the refund which will be visible to the customer, and an invoice number. The reason and invoice
+number are optional parameters.
+
+```injectablephp
+use Drewdan\Paypal\Services\Payments\Captures;
+
+$client = new Captures;
+
+$capture = $client->refund('captureId', 5.99, 'Some resaon', 'Invoice 123');
+```
+
+### Showing a captured payment
+
+This call will show the details of a captured payment. They are retrieved via their capture ID. Ideally, when you 
+take and capture a payment you would store the capture ID in a database against a given order, so you can reference
+it in future to make refunds or view details about the capture.
+
+```PHP
+use Drewdan\Paypal\Services\Payments\Captures;
+
+$client = new Captures;
+
+$capture = $client->show('captureId');
+
+```
+
+## Contributing
+
+Contributions are welcome, if you have anything you'd like to add, please open a Pull Request. If you find a bug or 
+other issue with this package, please open an issue on the repo.

@@ -1,0 +1,36 @@
+{
+  "id": "5O190127TN364715T",
+  "status": "PAYER_ACTION_REQUIRED",
+  "intent": "CAPTURE",
+  "payment_source": {
+    "alipay": {
+      "name": "John Doe",
+      "country_code": "C2"
+    }
+  },
+  "purchase_units": [
+    {
+      "reference_id": "d9f80740-38f0-11e8-b467-0ed5f89f718b",
+      "amount": {
+        "currency_code": "USD",
+        "value": "100.00"
+      },
+      "payee": {
+        "email_address": "payee@example.com"
+      }
+    }
+  ],
+  "create_time": "2018-04-01T21:18:49Z",
+  "links": [
+    {
+      "href": "https://www.paypal.com/payment/alipay?token=5O190127TN364715T",
+      "rel": "payer-action",
+      "method": "GET"
+    },
+    {
+      "href": "https://api-m.paypal.com/v2/checkout/orders/5O190127TN364715T",
+      "rel": "self",
+      "method": "GET"
+    }
+  ]
+}
