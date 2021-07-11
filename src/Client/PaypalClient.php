@@ -8,7 +8,7 @@ use Illuminate\Http\Client\PendingRequest;
 
 class PaypalClient {
 
-	const VERSION = '/V2/';
+	const VERSION = '/v2/';
 
 	const SANDBOX_URL = 'https://api-m.sandbox.paypal.com';
 
