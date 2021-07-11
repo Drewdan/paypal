@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "57059284a8cde6a323658fe2b2c505b7",
+    "content-hash": "f853919be40536086cc51812935c3eba",
     "packages": [
         {
             "name": "brick/math",
@@ -742,12 +742,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "7a82103f839d094ea007a233cfd8c00f678f271b"
+                "reference": "45d439e98a6b14afde8911f7d22a265948adbf72"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/7a82103f839d094ea007a233cfd8c00f678f271b",
-                "reference": "7a82103f839d094ea007a233cfd8c00f678f271b",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/45d439e98a6b14afde8911f7d22a265948adbf72",
+                "reference": "45d439e98a6b14afde8911f7d22a265948adbf72",
                 "shasum": ""
             },
             "require": {
@@ -903,7 +903,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2021-07-09T13:40:46+00:00"
+            "time": "2021-07-10T16:26:12+00:00"
         },
         {
             "name": "league/commonmark",
@@ -911,12 +911,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/commonmark.git",
-                "reference": "5e07387617ee5ec9013de4de4519c8c454d9ce4d"
+                "reference": "4b7060e5b7aad24c34e72581cbb9728997394765"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/5e07387617ee5ec9013de4de4519c8c454d9ce4d",
-                "reference": "5e07387617ee5ec9013de4de4519c8c454d9ce4d",
+                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/4b7060e5b7aad24c34e72581cbb9728997394765",
+                "reference": "4b7060e5b7aad24c34e72581cbb9728997394765",
                 "shasum": ""
             },
             "require": {
@@ -1015,7 +1015,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-07-09T14:06:30+00:00"
+            "time": "2021-07-10T19:56:08+00:00"
         },
         {
             "name": "league/config",
@@ -7890,6 +7890,8 @@
     "platform": {
         "php": "^7.4"
     },
-    "platform-dev": [],
+    "platform-dev": {
+        "ext-json": "*"
+    },
     "plugin-api-version": "2.1.0"
 }
