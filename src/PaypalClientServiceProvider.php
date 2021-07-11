@@ -6,7 +6,7 @@ use Illuminate\Support\ServiceProvider;
 
 class PaypalClientServiceProvider extends ServiceProvider {
 
-	public function boot() {
+	public function boot(): void {
 		$this->publishes([
 			__DIR__ . '/../config/paypal.php' => config_path('paypal.php'),
 		]);
@@ -17,6 +17,6 @@ class PaypalClientServiceProvider extends ServiceProvider {
 	 *
 	 * @return void
 	 */
-	public function register() {
+	public function register(): void {
 	}
 }
