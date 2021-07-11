@@ -6,7 +6,7 @@
     "php": "^7.4",
     "laravel/framework": "^8.0.",
     "netresearch/jsonmapper": "^v4.0.0",
-    "guzzlehttp/guzzle": "7.4.x-dev"
+    "guzzlehttp/guzzle": "^7.4"
   },
   "authors": [
     {
