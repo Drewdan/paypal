@@ -38,6 +38,6 @@
     "ext-json": "*"
   },
   "scripts": {
-    "test": "phpunit",
+    "test": "phpunit"
   }
 }
