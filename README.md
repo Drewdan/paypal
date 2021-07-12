@@ -14,7 +14,7 @@ The orders class is the class you would use to create and capture payments from 
 
 ### Creating an Order
 
-```PHP
+```injectablephp
 use Drewdan\Paypal\Services\Orders\Order;
 
 $order = new Order;
@@ -54,7 +54,7 @@ this Order ID.
 
 ### Capturing a Payment
 
-```PHP
+```injectablephp
 use Drewdan\Paypal\Services\Orders\Order;
 
 $order = new Order;
@@ -75,16 +75,23 @@ Once this is complete, you will have captured the payment.
 After payment has been completed, you might sometimes need to refund the payment, if for example, you are unable to
 fulfil the order. The captures class has the ability to show an existing captured payment, or refund it.
 
-The refund method accepts the captureId of the first parameter, the required refund amount, which allow for partial
-refunds, a reason for the refund which will be visible to the customer, and an invoice number. The reason and invoice
-number are optional parameters.
+The refund method accepts the following parameters:
+
+| Parameter | Type | Required | Description |
+| --------  | ---- | -------- | ----------- |
+| captureId | string | True     | This is the capture ID, used to identify the capture to provide the refund against |
+| amount | float | True | This is amount you wish to refund. |
+| currency | string | false | This is the currency in which the refund os given. Defaults to GBP |
+| reason | string | false | You can optionally provide a reason for the refund which will be displayed to the customer |
+| invoiceId | string | false | You can optionally  provide an invoice ID if applicable |
+
 
 ```injectablephp
 use Drewdan\Paypal\Services\Payments\Captures;
 
 $client = new Captures;
 
-$capture = $client->refund('captureId', 5.99, 'Some resaon', 'Invoice 123');
+$capture = $client->refund('captureId', 5.99, 'GBP', 'Some reason', 'Invoice 123');
 ```
 
 ### Showing a captured payment
@@ -93,7 +100,7 @@ This call will show the details of a captured payment. They are retrieved via th
 take and capture a payment you would store the capture ID in a database against a given order, so you can reference
 it in future to make refunds or view details about the capture.
 
-```PHP
+```injectablephp
 use Drewdan\Paypal\Services\Payments\Captures;
 
 $client = new Captures;
