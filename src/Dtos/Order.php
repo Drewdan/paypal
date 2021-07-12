@@ -38,10 +38,14 @@ class Order extends BaseDto {
 		return (new JsonMapper)->map($link, new Link);
 	}
 
-	public function getTotalValue() {
-		return collect($this->purchaseUnits)->map(function ($unit) {
-			return $unit->amount->value;
-		})
-			->sum();
+	public function getTotalValue(): ?float {
+		return isset($this->purchaseUnits) ?
+			collect($this->purchaseUnits)->map(function ($unit) {
+				return $unit->amount->value;
+			})
+				->sum()
+			: collect($this->paymentSource)->flatten(1)->map(function ($entry) {
+				return ['value' => $entry->amount->value];
+			})->sum('value');
 	}
 }

@@ -30,9 +30,12 @@ class Captures extends PaypalClient {
 	 * @return \Drewdan\Paypal\Dtos\Capture
 	 * @throws \JsonMapper_Exception
 	 */
-	public function refund(string $captureId, float $amount, string $reason = '', string $invoiceId = ''): Capture {
+	public function refund(string $captureId, float $amount, string $currency = 'GBP', string $reason = '', string $invoiceId = ''): Capture {
 		$capture = $this->client->post('payments/captures/' . $captureId . '/refund', array_filter([
-			'amount' => $amount,
+			'amount' => [
+				'value' => $amount,
+				'currency_code' => $currency,
+			],
 			'note_to_payer' => $reason,
 			'invoice_id' => $invoiceId,
 		]))->object();

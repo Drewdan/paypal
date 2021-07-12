@@ -31,7 +31,7 @@ class CapturesTest extends TestCase {
 
 		$client = new Captures;
 
-		$capture = $client->refund('foo', 5.99, 'some reason', '123');
+		$capture = $client->refund('foo', 5.99, 'GBP', 'some reason', '123');
 
 		$this->assertEquals('COMPLETED', $capture->status);
 
