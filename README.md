@@ -6,7 +6,21 @@ available.
 I built this package, because at the time, I could not find a suitable package to do what I wanted (though this might be
 due to poor Google skills.) - so I built this.
 
-The documentation for which this package is based on can be found here: https://developer.paypal.com/docs/api/payments/v2/
+The documentation for the API which this package uses can be found here: https://developer.paypal.com/docs/api/payments/v2/
+
+## Installation
+
+This is best installed by composer:
+
+```
+composer require drewdan/paypal
+```
+
+Publish the config files using the following command
+
+```
+php artisan vendor:publish --tag=drewdan-paypal-config
+```
 
 ## Orders
 
