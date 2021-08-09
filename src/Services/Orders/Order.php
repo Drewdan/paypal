@@ -2,10 +2,10 @@
 
 namespace Drewdan\Paypal\Services\Orders;
 
-use Drewdan\Paypal\Client\PaypalClient;
+use Drewdan\Paypal\Services\PaypalService;
 use Drewdan\Paypal\Dtos\Order as PaypalOrder;
 
-class Order extends PaypalClient {
+class Order extends PaypalService {
 
 	/**
 	 * Create an order, this order will generate a payment link for the user, once used, the payment will need to be captured
@@ -27,7 +27,7 @@ class Order extends PaypalClient {
 			'application_context' => $applicationContext,
 		]));
 
-		return $this->mapper->map($response->object(), new PaypalOrder);
+		return $this->mapper->map($response, new PaypalOrder);
 	}
 
 	/**
@@ -40,7 +40,7 @@ class Order extends PaypalClient {
 	public function show(string $orderId): PaypalOrder {
 		$response = $this->client->get('checkout/orders/' . $orderId);
 
-		return $this->mapper->map($response->object(), new PaypalOrder);
+		return $this->mapper->map($response, new PaypalOrder);
 	}
 
 	/**
@@ -56,7 +56,7 @@ class Order extends PaypalClient {
 			'payment_method' => $paymentMethod
 		]);
 
-		return $this->mapper->map($response->object(), new PaypalOrder);
+		return $this->mapper->map($response, new PaypalOrder);
 	}
 
 }
