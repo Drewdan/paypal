@@ -3,9 +3,9 @@
 namespace Drewdan\Paypal\Services\Payments;
 
 use Drewdan\Paypal\Dtos\Capture;
-use Drewdan\Paypal\Client\PaypalClient;
+use Drewdan\Paypal\Services\PaypalService;
 
-class Captures extends PaypalClient {
+class Captures extends PaypalService {
 
 	/**
 	 * Shows a capture from the capture ID
@@ -15,7 +15,7 @@ class Captures extends PaypalClient {
 	 * @throws \JsonMapper_Exception
 	 */
 	public function show(string $captureId): Capture {
-		$capture = $this->client->get('payments/captures/' . $captureId)->object();
+		$capture = $this->client->get('payments/captures/' . $captureId);
 
 		return $this->mapper->map($capture, new Capture);
 	}
@@ -38,7 +38,7 @@ class Captures extends PaypalClient {
 			],
 			'note_to_payer' => $reason,
 			'invoice_id' => $invoiceId,
-		]))->object();
+		]));
 
 		return $this->mapper->map($capture, new Capture);
 	}
