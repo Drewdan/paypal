@@ -38,7 +38,7 @@ class OrderTest extends TestCase {
 
 		$client = new Order;
 
-		$order = $client->create($purchaseUnits, 'CHARGE', $applicationContext);
+		$order = $client->create($purchaseUnits, 'CAPTURE', $applicationContext);
 
 		$this->assertEquals($order->id, $this->getApiResponse('order_created', false)->id);
 	}
