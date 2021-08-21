@@ -23,7 +23,6 @@ class PaypalClient {
 	/** @var \Illuminate\Http\Client\PendingRequest */
 	public PendingRequest $client;
 
-
 	/**
 	 * @throws \Drewdan\Paypal\Exceptions\MissingCredentialsException
 	 */
@@ -35,9 +34,7 @@ class PaypalClient {
 		}
 		$this->client = Http::withBasicAuth(config('paypal.client_id'), config('paypal.secret'))
 			->asJson()
-			->baseUrl(
-				config('paypal.environment') === 'LIVE' ? self::LIVE_URL : self::SANDBOX_URL . self::VERSION
-			);
+			->baseUrl($this->generateBaseUrl());
 	}
 
 	/**
@@ -62,6 +59,15 @@ class PaypalClient {
 		}
 
 		return $response;
+	}
+
+	/**
+	 * Generates a base URL for the requests
+	 *
+	 * @return string
+	 */
+	public function generateBaseUrl(): string {
+		return (config('paypal.environment') === 'LIVE' ? self::LIVE_URL : self::SANDBOX_URL) . self::VERSION;
 	}
 
 	/**

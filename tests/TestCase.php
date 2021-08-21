@@ -20,6 +20,7 @@ class TestCase extends \Orchestra\Testbench\TestCase {
 	protected function getEnvironmentSetUp($app) {
 		Config::set('paypal.client_id', 'client_id');
 		Config::set('paypal.secret', 'secret');
+		Config::set('paypal.environment', 'LIVE');
 	}
 
 	public function getApiResponse(string $name, bool $associative = true) {

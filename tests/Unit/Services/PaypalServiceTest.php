@@ -23,7 +23,7 @@ class PaypalServiceTest extends TestCase {
 	 */
 	public function testCanCatchInvalidRequestExceptionWhenThrown($responseType, $responseCode, $exceptionType) {
 		Http::fake([
-			'https://api-m.sandbox.paypal.com/v2/checkout/orders' => Http::response(
+			'https://api-m.paypal.com/v2/checkout/orders' => Http::response(
 				$this->getApiResponse($responseType),
 				$responseCode
 			),
