@@ -10,7 +10,7 @@ use Drewdan\Paypal\Exceptions\InvalidRequestException;
 
 class PaypalServiceTest extends TestCase {
 
-	public function exceptionProvider(): array {
+	public static function exceptionProvider(): array {
 		return [
 			'Invalid Request Exception' => ['invalid-request', 401, InvalidRequestException::class],
 			'Invalid Client Exception' => ['invalid-client', 401, InvalidClientException::class],
