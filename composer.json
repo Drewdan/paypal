@@ -3,8 +3,8 @@
   "description": "A simple Paypal Client for the V2 API",
   "license": "MIT",
   "require": {
-    "php": "^8.0",
-    "laravel/framework": "^9.0.",
+    "php": "^8.2",
+    "laravel/framework": "^10.0.",
     "netresearch/jsonmapper": "^v4.0.0",
     "guzzlehttp/guzzle": "^7.4"
   },
@@ -33,8 +33,8 @@
     }
   },
   "require-dev": {
-    "phpunit/phpunit": "^9",
-    "orchestra/testbench": "^7.0",
+    "phpunit/phpunit": "^10.0",
+    "orchestra/testbench": "^8.0",
     "ext-json": "*"
   },
   "scripts": {
