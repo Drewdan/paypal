@@ -5,9 +5,11 @@ namespace Drewdan\Paypal\Client;
 use JsonMapper;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\Response;
 use Illuminate\Http\Client\PendingRequest;
+use Drewdan\Paypal\Builders\PaymentSource\Paypal;
 use Drewdan\Paypal\Exceptions\InvalidClientException;
 use Drewdan\Paypal\Exceptions\InvalidRequestException;
 use Drewdan\Paypal\Exceptions\MissingCredentialsException;
@@ -26,7 +28,7 @@ class PaypalClient {
 	/**
 	 * @throws \Drewdan\Paypal\Exceptions\MissingCredentialsException
 	 */
-	public function __construct() {
+	public function __construct(public bool $responseAsArray = false) {
 		if (
 			Str::of(config('paypal.client_id'))->trim()->isEmpty() ||
 			Str::of(config('paypal.secret'))->trim()->isEmpty()) {
@@ -35,6 +37,10 @@ class PaypalClient {
 		$this->client = Http::withBasicAuth(config('paypal.client_id'), config('paypal.secret'))
 			->asJson()
 			->baseUrl($this->generateBaseUrl());
+	}
+
+	public static function make(bool $responseAsArray = false): static {
+		return App::make(PaypalClient::class, ['responseAsArray' => $responseAsArray]);
 	}
 
 	/**
@@ -46,7 +52,8 @@ class PaypalClient {
 	 * @throws \Exception
 	 */
 	public function __call(string $name, array $arguments = []) {
-		$response = $this->makeRequest($name, $arguments)->object();
+		$responseType = $this->responseAsArray ? 'json' : 'object';
+		$response = $this->makeRequest($name, $arguments)->$responseType();
 
 		if (isset($response->error)) {
 			$errorMethod = Str::camel($response->error);
@@ -67,7 +74,9 @@ class PaypalClient {
 	 * @return string
 	 */
 	public function generateBaseUrl(): string {
-		return (config('paypal.environment') === 'LIVE' ? self::LIVE_URL : self::SANDBOX_URL) . self::VERSION;
+		return (config('paypal.environment') === 'LIVE'
+				? self::LIVE_URL
+				: self::SANDBOX_URL) . self::VERSION;
 	}
 
 	/**

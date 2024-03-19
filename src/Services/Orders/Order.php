@@ -15,6 +15,7 @@ class Order extends PaypalService {
 	 * @param array $applicationContext
 	 * @return \Drewdan\Paypal\Dtos\Order
 	 * @throws \JsonMapper_Exception
+	 * @deprecated Use OrderBuilder instead
 	 */
 	public function create(
 		array $purchaseUnits,
