@@ -1,5 +1,7 @@
 /vendor/
 .phpunit.result.cache
-.idea/
-.idea
+.idea/*
+.idea*
 ray.php
+.phpunit.cache
+.env

@@ -2,21 +2,18 @@
 
 namespace Drewdan\Paypal\Client;
 
-use JsonMapper;
 use Illuminate\Support\Str;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\Response;
 use Illuminate\Http\Client\PendingRequest;
-use Drewdan\Paypal\Builders\PaymentSource\Paypal;
 use Drewdan\Paypal\Exceptions\InvalidClientException;
 use Drewdan\Paypal\Exceptions\InvalidRequestException;
 use Drewdan\Paypal\Exceptions\MissingCredentialsException;
 
 class PaypalClient {
 
-	const VERSION = '/v2/';
+	private string $version = '/v2/';
 
 	const SANDBOX_URL = 'https://api-m.sandbox.paypal.com';
 
@@ -28,19 +25,39 @@ class PaypalClient {
 	/**
 	 * @throws \Drewdan\Paypal\Exceptions\MissingCredentialsException
 	 */
-	public function __construct(public bool $responseAsArray = false) {
+	public function __construct(public bool $responseAsArray = false, public bool $useV1 = false) {
 		if (
 			Str::of(config('paypal.client_id'))->trim()->isEmpty() ||
 			Str::of(config('paypal.secret'))->trim()->isEmpty()) {
 			throw new MissingCredentialsException('You have not set your Paypal Credentials');
 		}
+
+		if ($this->useV1) {
+			$this->version = '/v1/';
+		}
+
 		$this->client = Http::withBasicAuth(config('paypal.client_id'), config('paypal.secret'))
 			->asJson()
 			->baseUrl($this->generateBaseUrl());
 	}
 
-	public static function make(bool $responseAsArray = false): static {
-		return App::make(PaypalClient::class, ['responseAsArray' => $responseAsArray]);
+	public static function make(bool $responseAsArray = false, bool $useV1 = false): static {
+		return App::make(
+			PaypalClient::class,
+			[
+				'responseAsArray' => $responseAsArray,
+				'useV1' => $useV1,
+			]
+		);
+	}
+
+	public function getClient(): PendingRequest {
+		return $this->client;
+	}
+
+	public function withQuery(array $query): static {
+		$this->client->withQuery($query);
+		return $this;
 	}
 
 	/**
@@ -76,7 +93,7 @@ class PaypalClient {
 	public function generateBaseUrl(): string {
 		return (config('paypal.environment') === 'LIVE'
 				? self::LIVE_URL
-				: self::SANDBOX_URL) . self::VERSION;
+				: self::SANDBOX_URL) . $this->version;
 	}
 
 	/**
