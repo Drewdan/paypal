@@ -1,0 +1,19 @@
+{
+  "event_types": [
+    {
+      "name": "PAYMENT.AUTHORIZATION.CREATED",
+      "description": "A payment authorization was created.",
+      "status": "ENABLED"
+    },
+    {
+      "name": "PAYMENT.AUTHORIZATION.VOIDED",
+      "description": "A payment authorization was voided.",
+      "status": "ENABLED"
+    },
+    {
+      "name": "RISK.DISPUTE.CREATED",
+      "description": "A dispute was filed against a transaction.",
+      "status": "DEPRECATED"
+    }
+  ]
+}
