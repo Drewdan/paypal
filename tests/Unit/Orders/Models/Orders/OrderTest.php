@@ -85,8 +85,6 @@ class OrderTest extends TestCase {
 			return $request->url() === 'https://api-m.paypal.com/v2/checkout/orders';
 		});
 
-		ray($order);
-
 		$this->assertEquals(
 			'https://www.paypal.com/checkoutnow?token=5O190127TN364715T',
 			$order->getPaymentRedirectUrl()

@@ -1,5 +1,9 @@
 <?php
 
+use Illuminate\Support\Facades\Log;
+use Drewdan\Paypal\Webhooks\Enums\WebhookEventEnum;
+use Drewdan\Paypal\Webhooks\Handlers\DefaultWebhookHandler;
+
 return [
 	'client_id' => env('paypal_client_id', ''),
 	'secret' => env('paypal_secret', ''),
@@ -14,5 +18,12 @@ return [
 		'user_action' => env('PAYPAL_EC_USER_ACTION', 'PAY_NOW'),
 		'return_url' => env('PAYPAL_EC_RETURN_URL'),
 		'cancel_url' => env('PAYPAL_EC_CANCEL_URL'),
+	],
+
+	'webhook' => [
+		'handlers' => [
+			WebhookEventEnum::PAYMENT_AUTHORIZATION_CREATED->value => DefaultWebhookHandler::class,
+
+		],
 	],
 ];

@@ -2,7 +2,7 @@
 
 namespace Drewdan\Paypal\Webhooks\Enums;
 
-enum WebhookEventEnum: string {#
+enum WebhookEventEnum: string {
 
 	// Payments V2
 

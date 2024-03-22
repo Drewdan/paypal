@@ -24,6 +24,10 @@ class WebhookEvent implements FromResponse {
 	) {
 	}
 
+	public function getEventType(): WebhookEventEnum {
+		return $this->event_type;
+	}
+
 	public static function fromResponse(array $response): static {
 		return new static(
 			id: $response['id'],
