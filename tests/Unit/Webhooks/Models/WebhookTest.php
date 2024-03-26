@@ -27,6 +27,22 @@ class WebhookTest extends TestCase {
 
 		$this->assertEquals('https://example.com/example_webhook', $webhook->url);
 		$this->assertCount(2, $webhook->listEvents());
+
+		Http::assertSent(function ($request) {
+			$payload = json_decode($request->body(), true);
+
+			$expectedPayload = [
+				'url' => 'https://example.com/example_webhook',
+				'event_types' => [
+					['name' => 'PAYMENT.AUTHORIZATION.CREATED'],
+					['name' => 'PAYMENT.CAPTURE.COMPLETED'],
+				],
+			];
+
+			$this->assertEquals($expectedPayload, $payload);
+
+			return true;
+		});
 	}
 
 	public function testListingWebhooks() {
