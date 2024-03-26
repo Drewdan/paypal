@@ -52,7 +52,7 @@ class WebhookBuilder implements BuildsPayload {
 	public function buildPayload(): array {
 		return [
 			'url' => $this->url,
-			'events' => $this->events->mapWithKeys(fn (WebhookEventEnum $event) => ['name' => $event->value]),
+			'event_types' => $this->events->map(fn (WebhookEventEnum $event) => ['name' => $event->value]),
 		];
 	}
 
