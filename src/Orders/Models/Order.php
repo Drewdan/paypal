@@ -6,13 +6,14 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Drewdan\Paypal\Client\PaypalClient;
 use Drewdan\Paypal\Common\Models\Links;
+use Drewdan\Paypal\Common\Models\Resource;
 use Drewdan\Paypal\Orders\Builders\OrderBuilder;
 use Drewdan\Paypal\Orders\Enums\OrderStatusEnum;
 use Drewdan\Paypal\Common\Contracts\FromResponse;
 use Drewdan\Paypal\Orders\Contracts\BuildsPaymentSource;
 use Drewdan\Paypal\Orders\Builders\PaymentSource\PaymentSource;
 
-class Order implements FromResponse {
+class Order extends Resource implements FromResponse {
 
 	private PaypalClient $client;
 

@@ -1,0 +1,64 @@
+{
+  "id": "WH-55TG7562XN2588878-8YH955435R661687G",
+  "create_time": "2018-05-03T22:20:32.000Z",
+  "resource_type": "order",
+  "event_type": "CHECKOUT.ORDER.SAVED",
+  "summary": "Order 9NK63094MA726991F for 100 USD has been saved.",
+  "resource": {
+    "create_time": "2019-03-06T21:42:35Z",
+    "purchase_units": [
+      {
+        "reference_id": "REDFWE35G",
+        "amount": {
+          "currency_code": "USD",
+          "value": "100.00"
+        },
+        "payee": {
+          "email_address": "pbehara-seller@paypal.com",
+          "merchant_id": "WDMEWZ63SR74G"
+        }
+      }
+    ],
+    "links": [
+      {
+        "href": "https://api.paypal.com/v2/checkout/orders/9NK63094MA726991F",
+        "rel": "self",
+        "method": "GET"
+      },
+      {
+        "href": "https://api.paypal.com/checkoutnow?token=9NK63094MA726991F",
+        "rel": "approve",
+        "method": "GET"
+      },
+      {
+        "href": "https://api.paypal.com/v2/checkout/orders/9NK63094MA726991F",
+        "rel": "update",
+        "method": "PATCH"
+      },
+      {
+        "href": "https://api.paypal.com/v2/checkout/orders/9NK63094MA726991F/save",
+        "rel": "save",
+        "method": "POST"
+      }
+    ],
+    "id": "9NK63094MA726991F",
+    "intent": "AUTHORIZE",
+    "status": "SAVED"
+  },
+  "links": [
+    {
+      "href": "https://api.paypal.com/v1/notifications/webhooks-events/WH-55TG7562XN2588878-8YH955435R661687G",
+      "rel": "self",
+      "method": "GET",
+      "encType": "application/json"
+    },
+    {
+      "href": "https://api.paypal.com/v1/notifications/webhooks-events/WH-55TG7562XN2588878-8YH955435R661687G/resend",
+      "rel": "resend",
+      "method": "POST",
+      "encType": "application/json"
+    }
+  ],
+  "event_version": "1.0",
+  "resource_version": "2.0"
+}

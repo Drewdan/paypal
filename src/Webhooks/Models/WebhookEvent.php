@@ -5,6 +5,8 @@ namespace Drewdan\Paypal\Webhooks\Models;
 use Carbon\CarbonImmutable;
 use Drewdan\Paypal\Common\Models\Links;
 use Drewdan\Paypal\Client\PaypalClient;
+use Drewdan\Paypal\Orders\Models\Order;
+use Drewdan\Paypal\Common\Models\Resource;
 use Drewdan\Paypal\Common\Contracts\FromResponse;
 use Drewdan\Paypal\Webhooks\Enums\WebhookEventEnum;
 use Drewdan\Paypal\Webhooks\Builders\WebhookEventQueryBuilder;
@@ -28,16 +30,30 @@ class WebhookEvent implements FromResponse {
 		return $this->event_type;
 	}
 
+	public static function getResourceClass(WebhookEventEnum $eventType): string {
+		return match($eventType) {
+			WebhookEventEnum::CHECKOUT_ORDER_APPROVED,
+			WebhookEventEnum::CHECKOUT_ORDER_VOIDED,
+			WebhookEventEnum::CHECKOUT_ORDER_SAVED,
+			WebhookEventEnum::CHECKOUT_ORDER_COMPLETED => Order::class,
+			default => throw new \Exception('Resource class not found for event type'),
+		};
+	}
+
 	public static function fromResponse(array $response): static {
+		$eventType = WebhookEventEnum::from($response['event_type']);
+
+		$resourceClass = static::getResourceClass($eventType);
+
 		return new static(
 			id: $response['id'],
 			create_time: CarbonImmutable::parse($response['create_time']),
 			resource_type: $response['resource_type'],
 			event_version: $response['event_version'],
-			event_type: WebhookEventEnum::from($response['event_type']),
+			event_type: $eventType,
 			summary: $response['summary'],
 			resource_version: $response['resource_version'],
-			resource: Resource::fromArray($response['resource']),
+			resource: $resourceClass::fromResponse($response['resource']),
 			links: Links::fromArray($response['links']),
 		);
 	}
