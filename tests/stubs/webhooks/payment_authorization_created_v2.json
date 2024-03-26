@@ -1,0 +1,68 @@
+{
+  "id": "WH-1R4898529P235423R-4DP99720Y04588453",
+  "create_time": "2019-02-14T08:06:33.135Z",
+  "resource_type": "authorization",
+  "event_type": "PAYMENT.AUTHORIZATION.CREATED",
+  "summary": "A successful payment authorization was created for $ 2.51 USD",
+  "resource": {
+    "amount": {
+      "currency_code": "USD",
+      "value": "2.51"
+    },
+    "seller_protection": {
+      "status": "ELIGIBLE",
+      "dispute_categories": [
+        "ITEM_NOT_RECEIVED",
+        "UNAUTHORIZED_TRANSACTION"
+      ]
+    },
+    "update_time": "2019-02-14T08:06:03Z",
+    "create_time": "2019-02-14T08:06:03Z",
+    "expiration_time": "2019-03-15T08:06:03Z",
+    "links": [
+      {
+        "href": "https://api.paypal.com/v2/payments/authorizations/30S64539YV2718350",
+        "rel": "self",
+        "method": "GET"
+      },
+      {
+        "href": "https://api.paypal.com/v2/payments/authorizations/30S64539YV2718350/capture",
+        "rel": "capture",
+        "method": "POST"
+      },
+      {
+        "href": "https://api.paypal.com/v2/payments/authorizations/30S64539YV2718350/void",
+        "rel": "void",
+        "method": "POST"
+      },
+      {
+        "href": "https://api.paypal.com/v2/payments/authorizations/30S64539YV2718350/reauthorize",
+        "rel": "reauthorize",
+        "method": "POST"
+      },
+      {
+        "href": "https://api.paypal.com/v2/checkout/orders/08X604183X066183S",
+        "rel": "up",
+        "method": "GET"
+      }
+    ],
+    "id": "30S64539YV2718350",
+    "status": "CREATED"
+  },
+  "links": [
+    {
+      "href": "https://api.paypal.com/v1/notifications/webhooks-events/WH-1R4898529P235423R-4DP99720Y04588453",
+      "rel": "self",
+      "method": "GET",
+      "encType": "application/json"
+    },
+    {
+      "href": "https://api.paypal.com/v1/notifications/webhooks-events/WH-1R4898529P235423R-4DP99720Y04588453/resend",
+      "rel": "resend",
+      "method": "POST",
+      "encType": "application/json"
+    }
+  ],
+  "event_version": "1.0",
+  "resource_version": "2.0"
+}

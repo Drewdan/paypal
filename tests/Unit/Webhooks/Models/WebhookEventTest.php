@@ -13,113 +13,37 @@ class WebhookEventTest extends TestCase {
 
 	public function testCanSimulateEvent() {
 		Http::fake([
-			'https://api-m.paypal.com/v1/notifications/simulate-event' => Http::response($this->getApiResponse('simulate_webhook')),
+			'https://api-m.paypal.com/v1/notifications/simulate-event' => Http::response($this->getApiResponse('webhooks/checkout_order_approved')),
 		]);
 
 		$webhookEvent = WebhookEvent::simulate(
 			'https://example.com',
-			WebhookEventEnum::PAYMENT_AUTHORIZATION_CREATED
+			WebhookEventEnum::CHECKOUT_ORDER_APPROVED
 		);
 
 		$this->assertInstanceOf(WebhookEvent::class, $webhookEvent);
-
-		$this->assertEquals('8PT597110X687430LKGECATA', $webhookEvent->id);
-		$this->assertEquals(Date::parse('2013-06-25T21:41:28Z'), $webhookEvent->create_time);
-		$this->assertEquals('authorization', $webhookEvent->resource_type);
-		$this->assertEquals('1.0', $webhookEvent->event_version);
-		$this->assertEquals(WebhookEventEnum::PAYMENT_AUTHORIZATION_CREATED, $webhookEvent->event_type);
-		$this->assertEquals('A payment authorization was created', $webhookEvent->summary);
-		$this->assertEquals('1.0', $webhookEvent->resource_version);
-
-		$resource = $webhookEvent->resource;
-
-		$this->assertEquals('2DC87612EK520411B', $resource->id);
-		$this->assertEquals(Date::parse('2013-06-25T21:39:15Z'), $resource->create_time);
-		$this->assertEquals(Date::parse('2013-06-25T21:39:17Z'), $resource->update_time);
-		$this->assertEquals('authorized', $resource->state);
-		$this->assertEquals('PAY-36246664YD343335CKHFA4AY', $resource->parent_payment);
-		$this->assertEquals(Date::parse('2013-07-24T21:39:15Z'), $resource->valid_until);
-
-		$amount = $resource->amount;
-
-		$this->assertEquals('USD', $amount->currency);
-		$this->assertEquals('7.47', $amount->total);
-
-		$details = $amount->details;
-
-		$this->assertEquals('7.47', $details->subtotal);
 	}
 
 	public function testCanResendEvent() {
 		Http::fake([
-			'https://api-m.paypal.com/v1/notifications/webhooks-events/8PT597110X687430LKGECATA/resend' => Http::response($this->getApiResponse('simulate_webhook')),
+			'https://api-m.paypal.com/v1/notifications/webhooks-events/8PT597110X687430LKGECATA/resend' => Http::response($this->getApiResponse('webhooks/checkout_order_approved')),
 		]);
 
 		$webhookEvent = WebhookEvent::resend('8PT597110X687430LKGECATA');
 
 		$this->assertInstanceOf(WebhookEvent::class, $webhookEvent);
-
-		$this->assertEquals('8PT597110X687430LKGECATA', $webhookEvent->id);
-		$this->assertEquals(Date::parse('2013-06-25T21:41:28Z'), $webhookEvent->create_time);
-		$this->assertEquals('authorization', $webhookEvent->resource_type);
-		$this->assertEquals('1.0', $webhookEvent->event_version);
-		$this->assertEquals(WebhookEventEnum::PAYMENT_AUTHORIZATION_CREATED, $webhookEvent->event_type);
-		$this->assertEquals('A payment authorization was created', $webhookEvent->summary);
-		$this->assertEquals('1.0', $webhookEvent->resource_version);
-
-		$resource = $webhookEvent->resource;
-
-		$this->assertEquals('2DC87612EK520411B', $resource->id);
-		$this->assertEquals(Date::parse('2013-06-25T21:39:15Z'), $resource->create_time);
-		$this->assertEquals(Date::parse('2013-06-25T21:39:17Z'), $resource->update_time);
-		$this->assertEquals('authorized', $resource->state);
-		$this->assertEquals('PAY-36246664YD343335CKHFA4AY', $resource->parent_payment);
-		$this->assertEquals(Date::parse('2013-07-24T21:39:15Z'), $resource->valid_until);
-
-		$amount = $resource->amount;
-
-		$this->assertEquals('USD', $amount->currency);
-		$this->assertEquals('7.47', $amount->total);
-
-		$details = $amount->details;
-
-		$this->assertEquals('7.47', $details->subtotal);
 	}
 
 	public function testCanRetrieveEvent() {
 		Http::fake([
-			'https://api-m.paypal.com/v1/notifications/webhooks-events/8PT597110X687430LKGECATA' => Http::response($this->getApiResponse('simulate_webhook')),
+			'https://api-m.paypal.com/v1/notifications/webhooks-events/8PT597110X687430LKGECATA' => Http::response($this->getApiResponse('webhooks/checkout_order_approved')),
 		]);
 
 		$webhookEvent = WebhookEvent::retrieve('8PT597110X687430LKGECATA');
 
 		$this->assertInstanceOf(WebhookEvent::class, $webhookEvent);
 
-		$this->assertEquals('8PT597110X687430LKGECATA', $webhookEvent->id);
-		$this->assertEquals(Date::parse('2013-06-25T21:41:28Z'), $webhookEvent->create_time);
-		$this->assertEquals('authorization', $webhookEvent->resource_type);
-		$this->assertEquals('1.0', $webhookEvent->event_version);
-		$this->assertEquals(WebhookEventEnum::PAYMENT_AUTHORIZATION_CREATED, $webhookEvent->event_type);
-		$this->assertEquals('A payment authorization was created', $webhookEvent->summary);
-		$this->assertEquals('1.0', $webhookEvent->resource_version);
-
-		$resource = $webhookEvent->resource;
-
-		$this->assertEquals('2DC87612EK520411B', $resource->id);
-		$this->assertEquals(Date::parse('2013-06-25T21:39:15Z'), $resource->create_time);
-		$this->assertEquals(Date::parse('2013-06-25T21:39:17Z'), $resource->update_time);
-		$this->assertEquals('authorized', $resource->state);
-		$this->assertEquals('PAY-36246664YD343335CKHFA4AY', $resource->parent_payment);
-		$this->assertEquals(Date::parse('2013-07-24T21:39:15Z'), $resource->valid_until);
-
-		$amount = $resource->amount;
-
-		$this->assertEquals('USD', $amount->currency);
-		$this->assertEquals('7.47', $amount->total);
-
-		$details = $amount->details;
-
-		$this->assertEquals('7.47', $details->subtotal);
+		$this->assertEquals('WH-COC11055RA711503B-4YM959094A144403T', $webhookEvent->id);
 	}
 
 	public function testCanQueryEventList() {

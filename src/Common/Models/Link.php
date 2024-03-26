@@ -8,7 +8,7 @@ class Link implements FromArray {
 
 	public function __construct(
 		public string $href,
-		public string $rel,
+		public ?string $rel,
 		public string $method,
 	) {
 	}
@@ -16,7 +16,7 @@ class Link implements FromArray {
 	public static function fromArray(array $data): static {
 		return new static(
 			href: $data['href'],
-			rel: $data['rel'],
+			rel: $data['rel'] ?? null,
 			method: $data['method'],
 		);
 	}
