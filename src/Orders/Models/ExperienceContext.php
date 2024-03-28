@@ -3,13 +3,14 @@
 namespace Drewdan\Paypal\Orders\Models;
 
 use Illuminate\Support\Facades\App;
+use Drewdan\Paypal\Common\Contracts\ToArray;
 use Drewdan\Paypal\Orders\Enums\UserActionEnum;
 use Drewdan\Paypal\Orders\Enums\LandingPageEnum;
 use Drewdan\Paypal\Common\Contracts\BuildsPayload;
 use Drewdan\Paypal\Orders\Enums\ShippingPreferenceEnum;
 use Drewdan\Paypal\Orders\Enums\PaymentMethodPreferenceEnum;
 
-class ExperienceContext implements BuildsPayload {
+class ExperienceContext implements BuildsPayload, ToArray {
 
 	public function __construct(
 		public ?string $brandName = null,
@@ -21,7 +22,19 @@ class ExperienceContext implements BuildsPayload {
 		public ?string $returnUrl = null,
 		public ?string $cancelUrl = null,
 	) {
+	}
 
+	public function toArray(): array {
+		return [
+			'payment_method_preference' => $this->paymentMethod?->value,
+			'brand_name' => $this->brandName,
+			'locale' => $this->locale,
+			'landing_page' => $this->landingPage?->value,
+			'shipping_preference' => $this->shippingPreference?->value,
+			'user_action' => $this->userAction?->value,
+			'return_url' => $this->returnUrl,
+			'cancel_url' => $this->cancelUrl,
+		];
 	}
 
 	public static function fromArray(array $data): static {

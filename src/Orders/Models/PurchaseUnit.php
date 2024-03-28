@@ -3,12 +3,12 @@
 namespace Drewdan\Paypal\Orders\Models;
 
 use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
+use Drewdan\Paypal\Common\Contracts\ToArray;
 use Drewdan\Paypal\Common\Contracts\FromArray;
 use Drewdan\Paypal\Common\Contracts\BuildsPayload;
 
-class PurchaseUnit implements BuildsPayload, FromArray {
+class PurchaseUnit implements BuildsPayload, FromArray, ToArray {
 
 	public function __construct(
 		public ?string $referenceId = null,
@@ -20,32 +20,46 @@ class PurchaseUnit implements BuildsPayload, FromArray {
 		public ?Payment $payments = null,
 		public ?Amount $amount = null,
 		public ?Shipping $shipping = null,
+		public ?Payee $payee = null,
 	) {
 	}
 
-	public static function fromArray(array $data): Collection {
-		$items = collect();
+	public function toArray(): array {
+		return array_filter([
+			'reference_id' => $this->referenceId,
+			'description' => $this->description,
+			'custom_id' => $this->customId,
+			'invoice_id' => $this->invoiceId,
+			'soft_descriptor' => $this->softDescriptor,
+			'items' => $this->items,
+			'payments' => $this->payments?->toArray(),
+			'amount' => $this->amount?->toArray(),
+			'shipping' => $this->shipping?->toArray(),
+			'payee' => $this->payee?->toArray(),
+		]);
+	}
 
-		foreach ($data as $item) {
-			$items->push(
-				new PurchaseUnit(
-					referenceId: $item['reference_id'] ?? null,
-					description: $item['description'] ?? null,
-					customId: $item['custom_id'] ?? null,
-					invoiceId: $item['invoice_id'] ?? null,
-					softDescriptor: $item['soft_descriptor'] ?? null,
-					items: $item['items'] ?? null,
-					payments: Arr::has($item, 'payments')
-						? Payment::fromArray($item['payments'])
-						: null,
-					shipping: Arr::has($item, 'shipping')
-						? Shipping::fromArray($item['shipping'])
-						: null,
-				)
-			);
-		}
-
-		return $items;
+	public static function fromArray(array $data): static {
+		return new PurchaseUnit(
+			referenceId: $data['reference_id'] ?? null,
+			description: $data['description'] ?? null,
+			customId: $data['custom_id'] ?? null,
+			invoiceId: $data['invoice_id'] ?? null,
+			softDescriptor: $data['soft_descriptor'] ?? null,
+			items: $data['items'] ?? null,
+			payments: Arr::has($data, 'payments')
+				? Payment::fromArray($data['payments'])
+				: null,
+			amount: Arr::has($data, 'amount')
+				? Amount::fromArray($data['amount'])
+				: null,
+			shipping: Arr::has($data, 'shipping')
+				? Shipping::fromArray($data['shipping'])
+				: null,
+			payee: Arr::has($data, 'payee')
+				? Payee::fromArray($data['payee'])
+				: null,
+		);
 	}
 
 	public static function make(): static {
@@ -72,9 +86,9 @@ class PurchaseUnit implements BuildsPayload, FromArray {
 
 
 	public function buildPayload(): array {
-		return [
+		return array_filter([
 			'reference_id' => $this->referenceId,
 			'amount' => $this->amount->buildPayload(),
-		];
+		]);
 	}
 }

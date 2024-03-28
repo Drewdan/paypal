@@ -99,6 +99,11 @@ class OrderTest extends TestCase {
 		$order = Order::retrieve('testOrderId');
 
 		$this->assertInstanceOf(Order::class, $order);
+
+		$expectedData = $this->getApiResponse('order_created');
+		$retrievedData = $order->toArray();
+
+		$this->assertEquals($expectedData, $retrievedData);
 	}
 
 	public function testUpdatingAnOrder() {
@@ -134,6 +139,10 @@ class OrderTest extends TestCase {
 
 		$this->assertInstanceOf(Order::class, $capturedOrder);
 
+		$expectedData = $this->getApiResponse('capture');
+		$capturedData = $capturedOrder->toArray();
+
+		$this->assertEquals($expectedData, $capturedData);
 	}
 
 	public function testAddingTrackingInformationToAnOrder() {

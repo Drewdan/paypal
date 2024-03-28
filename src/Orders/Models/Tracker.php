@@ -2,9 +2,10 @@
 
 namespace Drewdan\Paypal\Orders\Models;
 
+use Drewdan\Paypal\Common\Contracts\ToArray;
 use Drewdan\Paypal\Common\Contracts\FromArray;
 
-class Tracker implements FromArray {
+class Tracker implements FromArray, ToArray {
 
 	public function __construct(
 		public ?string $id = null,
@@ -12,6 +13,15 @@ class Tracker implements FromArray {
 		public ?string $create_time = null,
 		public ?string $update_time = null,
 	) {
+	}
+
+	public function toArray(): array {
+		return [
+			'id' => $this->id,
+			'links' => $this->links,
+			'create_time' => $this->create_time,
+			'update_time' => $this->update_time,
+		];
 	}
 
 	public static function fromArray(array $data): static {

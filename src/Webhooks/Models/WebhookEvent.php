@@ -58,6 +58,10 @@ class WebhookEvent implements FromResponse {
 		);
 	}
 
+	public function getResource(): Order | Resource {
+		return $this->resource;
+	}
+
 	public static function retrieve(string $id): static {
 		$response = PaypalClient::make(responseAsArray: true, useV1: true)->get("notifications/webhooks-events/{$id}");
 
