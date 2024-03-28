@@ -7,13 +7,14 @@ use Illuminate\Support\Collection;
 use Drewdan\Paypal\Client\PaypalClient;
 use Drewdan\Paypal\Common\Models\Links;
 use Drewdan\Paypal\Common\Models\Resource;
+use Drewdan\Paypal\Common\Contracts\ToArray;
 use Drewdan\Paypal\Orders\Builders\OrderBuilder;
 use Drewdan\Paypal\Orders\Enums\OrderStatusEnum;
 use Drewdan\Paypal\Common\Contracts\FromResponse;
 use Drewdan\Paypal\Orders\Contracts\BuildsPaymentSource;
 use Drewdan\Paypal\Orders\Builders\PaymentSource\PaymentSource;
 
-class Order extends Resource implements FromResponse {
+class Order extends Resource implements FromResponse, ToArray {
 
 	private PaypalClient $client;
 
@@ -22,14 +23,31 @@ class Order extends Resource implements FromResponse {
 		public ?string $update_time = null,
 		public ?string $id = null,
 		public ?string $processing_instruction = null,
-		public ?Collection $purchase_units = null,
+		public ?PurchaseUnits $purchase_units = null,
 		public ?Links $links = null,
 		public ?BuildsPaymentSource $payment_source = null,
 		public ?string $intent = null,
 		public ?array $payer = null,
 		public ?OrderStatusEnum $status = null,
+		public ?Amount $gross_amount = null,
 	) {
 		$this->client = PaypalClient::make(true);
+	}
+
+	public function toArray(): array {
+		return array_filter([
+			'create_time' => $this->create_time,
+			'update_time' => $this->update_time,
+			'id' => $this->id,
+			'processing_instruction' => $this->processing_instruction,
+			'purchase_units' => $this->purchase_units?->toArray(),
+			'links' => $this->links?->toArray(),
+			'payment_source' => $this->payment_source?->toArray(),
+			'intent' => $this->intent,
+			'payer' => $this->payer,
+			'status' => $this->status?->value,
+			'gross_amount' => $this->gross_amount?->toArray(),
+		]);
 	}
 
 	public static function fromResponse(array $response): static {
@@ -39,7 +57,7 @@ class Order extends Resource implements FromResponse {
 			id: $response['id'] ?? null,
 			processing_instruction: $response['processing_instruction'] ?? null,
 			purchase_units: Arr::has($response, 'purchase_units')
-				? PurchaseUnit::fromArray($response['purchase_units'])
+				? PurchaseUnits::fromArray($response['purchase_units'])
 				: null,
 			links: Arr::has($response, 'links')
 				? Links::fromArray($response['links'])
@@ -50,6 +68,9 @@ class Order extends Resource implements FromResponse {
 			intent: $response['intent'] ?? null,
 			payer: $response['payer'] ?? null,
 			status: $response['status'] ? OrderStatusEnum::from($response['status']) : null,
+			gross_amount: Arr::has($response, 'gross_amount')
+				? Amount::fromArray($response['gross_amount'])
+				: null,
 		);
 	}
 
@@ -79,12 +100,14 @@ class Order extends Resource implements FromResponse {
 		return $this->links->getByRef('payer-action')->href;
 	}
 
+	public function getPurchaseUnits(): Collection {
+		return $this->purchase_units->purchaseUnits;
+	}
+
 	public function listCaptures(): Collection {
-		return $this->purchase_units
+		return $this->getPurchaseUnits()
 			->map(fn (PurchaseUnit $purchaseUnit) => $purchaseUnit->payments)
 			->flatMap(fn (Payment $payment) => $payment->captures)
 			->each(fn (Capture $capture) => $capture->orderId = $this->id);
 	}
-
-
 }

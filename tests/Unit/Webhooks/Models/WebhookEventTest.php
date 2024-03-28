@@ -6,6 +6,7 @@ namespace Drewdan\Paypal\Tests\Unit\Webhooks\Models;
 use Drewdan\Paypal\Tests\TestCase;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Date;
+use Drewdan\Paypal\Orders\Models\Order;
 use Drewdan\Paypal\Webhooks\Models\WebhookEvent;
 use Drewdan\Paypal\Webhooks\Enums\WebhookEventEnum;
 
@@ -22,6 +23,15 @@ class WebhookEventTest extends TestCase {
 		);
 
 		$this->assertInstanceOf(WebhookEvent::class, $webhookEvent);
+
+		$resource = $webhookEvent->getResource();
+
+		$this->assertInstanceOf(Order::class, $resource);
+
+		$expectedPayload = $this->getApiResponse('webhooks/checkout_order_approved')['resource'];
+		$actualPayload = $resource->toArray();
+
+		$this->assertEquals($expectedPayload, $actualPayload);
 	}
 
 	public function testCanResendEvent() {
@@ -32,6 +42,15 @@ class WebhookEventTest extends TestCase {
 		$webhookEvent = WebhookEvent::resend('8PT597110X687430LKGECATA');
 
 		$this->assertInstanceOf(WebhookEvent::class, $webhookEvent);
+
+		$resource = $webhookEvent->getResource();
+
+		$this->assertInstanceOf(Order::class, $resource);
+
+		$expectedPayload = $this->getApiResponse('webhooks/checkout_order_approved')['resource'];
+		$actualPayload = $resource->toArray();
+
+		$this->assertEquals($expectedPayload, $actualPayload);
 	}
 
 	public function testCanRetrieveEvent() {

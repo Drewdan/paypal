@@ -2,10 +2,11 @@
 
 namespace Drewdan\Paypal\Orders\Models;
 
+use Drewdan\Paypal\Common\Contracts\ToArray;
 use Drewdan\Paypal\Common\Contracts\FromArray;
 use Drewdan\Paypal\Orders\Enums\AuthorizationStatusEnum;
 
-class Authorization implements FromArray {
+class Authorization implements FromArray, ToArray {
 
 	public function __construct(
 		public string $id,
@@ -15,6 +16,18 @@ class Authorization implements FromArray {
 		public string $expirationTime,
 		public array $links,
 	) {
+	}
+
+	public function toArray(): array {
+		return [
+			'id' => $this->id,
+			'status' => $this->status->value,
+			'amount' => $this->amount->toArray(),
+			'seller_protection' => $this->sellerProtection->toArray(),
+			'expiration_time' => $this->expirationTime,
+			'links' => $this->links,
+		];
+
 	}
 
 	public static function fromArray(array $data): static {

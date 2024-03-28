@@ -2,9 +2,10 @@
 
 namespace Drewdan\Paypal\Common\Models;
 
+use Drewdan\Paypal\Common\Contracts\ToArray;
 use Drewdan\Paypal\Common\Contracts\FromArray;
 
-class Link implements FromArray {
+class Link implements FromArray, ToArray {
 
 	public function __construct(
 		public string $href,
@@ -19,6 +20,14 @@ class Link implements FromArray {
 			rel: $data['rel'] ?? null,
 			method: $data['method'],
 		);
+	}
+
+	public function toArray(): array {
+		return array_filter([
+			'href' => $this->href,
+			'rel' => $this->rel,
+			'method' => $this->method,
+		]);
 	}
 
 }

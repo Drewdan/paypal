@@ -6,4 +6,6 @@ interface BuildsPaymentSource {
 
 	public function buildPaymentSource(): array;
 
+	public function toArray(): array;
+
 }

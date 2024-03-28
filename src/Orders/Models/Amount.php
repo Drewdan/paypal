@@ -3,15 +3,23 @@
 namespace Drewdan\Paypal\Orders\Models;
 
 use Illuminate\Support\Facades\App;
+use Drewdan\Paypal\Common\Contracts\ToArray;
 use Drewdan\Paypal\Common\Contracts\BuildsPayload;
 
-class Amount implements BuildsPayload {
+class Amount implements BuildsPayload, ToArray {
 
 	public string $currencyCode;
 	public float $value;
 
 	public static function make(): static {
 		return App::make(static::class);
+	}
+
+	public function toArray(): array {
+		return [
+			'currency_code' => $this->currencyCode,
+			'value' => $this->value,
+		];
 	}
 
 	public static function fromArray(array $data) {

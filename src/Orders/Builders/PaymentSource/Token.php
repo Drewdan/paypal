@@ -36,4 +36,13 @@ class Token extends PaymentSource implements BuildsPaymentSource {
 			],
 		];
 	}
+
+	public function toArray(): array {
+		return [
+			'token' => [
+				'id' => $this->id,
+				'type' => $this->type,
+			],
+		];
+	}
 }

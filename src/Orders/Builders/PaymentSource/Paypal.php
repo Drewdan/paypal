@@ -21,7 +21,27 @@ class Paypal extends PaymentSource implements BuildsPaymentSource {
 		public ?string $surname = null,
 		public ?string $phoneNumber = null,
 		public ?string $birthDate = null,
+		public ?string $accountId = null,
 	) {
+	}
+
+	public function toArray(): array {
+		return [
+			'paypal' => Helper::recursivelyRemoveNullValues([
+				'experience_context' => $this->experienceContext?->toArray(),
+				'vault_id' => $this->vaultId,
+				'email_address' => $this->emailAddress,
+				'name' => [
+					'given_name' => $this->givenName,
+					'surname' => $this->surname,
+				],
+				'phone' => [
+					'phone_number' => $this->phoneNumber,
+				],
+				'birth_date' => $this->birthDate,
+				'account_id' => $this->accountId,
+			]),
+		];
 	}
 
 	public function setExperienceContext(ExperienceContext $experienceContext): static {
@@ -114,8 +134,7 @@ class Paypal extends PaymentSource implements BuildsPaymentSource {
 			surname: $data['name']['surname'] ?? null,
 			phoneNumber: $data['phone']['phone_number'] ?? null,
 			birthDate: $data['birth_date'] ?? null,
+			accountId: $data['account_id'] ?? null,
 		);
 	}
-
-
 }
