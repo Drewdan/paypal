@@ -4,6 +4,7 @@ namespace Drewdan\Paypal\Client;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\Response;
 use Illuminate\Http\Client\PendingRequest;
@@ -70,7 +71,11 @@ class PaypalClient {
 	 */
 	public function __call(string $name, array $arguments = []) {
 		$responseType = $this->responseAsArray ? 'json' : 'object';
-		$response = $this->makeRequest($name, $arguments)->$responseType();
+		$response = $this->makeRequest($name, $arguments);
+
+		$rawResponse = $response;
+
+		$response = $response->$responseType();
 
 		if (isset($response->error)) {
 			$errorMethod = Str::camel($response->error);
@@ -80,6 +85,17 @@ class PaypalClient {
 
 			//this catches any exception that we do not have custom handlers for
 			throw new \Exception($response->error_description);
+		}
+
+
+		if (!$rawResponse->successful()) {
+			Log::error('Paypal Request Failed', [
+				'type' => $name,
+				'arguments' => $arguments,
+				'response' => $rawResponse->body(),
+			]);
+
+			throw new \Exception($rawResponse->object()?->message ?? 'An error occurred');
 		}
 
 		return $response;
