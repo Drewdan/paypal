@@ -143,6 +143,20 @@ class OrderTest extends TestCase {
 		$capturedData = $capturedOrder->toArray();
 
 		$this->assertEquals($expectedData, $capturedData);
+
+		Http::assertSent(function (Request $request) {
+			if ($request->url() === 'https://api-m.paypal.com/v2/checkout/orders/5O190127TN364715T/capture') {
+				$data = $request->data();
+
+				$expectedData = [];
+
+				$this->assertEquals($expectedData, $data);
+
+				return true;
+			}
+
+			return true;
+		});
 	}
 
 	public function testAddingTrackingInformationToAnOrder() {

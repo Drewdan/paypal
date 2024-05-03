@@ -85,7 +85,7 @@ class Order extends Resource implements FromResponse, ToArray {
 	}
 
 	public function capture(): Order {
-		$response = $this->client->post('checkout/orders/' . $this->id . '/capture');
+		$response = $this->client->post('checkout/orders/' . $this->id . '/capture', null);
 
 		return Order::fromResponse($response);
 	}

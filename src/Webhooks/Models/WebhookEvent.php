@@ -36,7 +36,7 @@ class WebhookEvent implements FromResponse {
 			WebhookEventEnum::CHECKOUT_ORDER_VOIDED,
 			WebhookEventEnum::CHECKOUT_ORDER_SAVED,
 			WebhookEventEnum::CHECKOUT_ORDER_COMPLETED => Order::class,
-			default => throw new \Exception('Resource class not found for event type'),
+			default => throw new \Exception('Resource class not found for event type ' . $eventType->value),
 		};
 	}
 

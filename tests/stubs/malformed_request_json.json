@@ -1,0 +1,20 @@
+{
+  "name": "INVALID_REQUEST",
+  "message": "Request is not well-formed, syntactically incorrect, or violates schema.",
+  "debug_id": "26bbfa9c4bf38",
+  "details": [
+    {
+      "field": "/",
+      "location": "body",
+      "issue": "MALFORMED_REQUEST_JSON",
+      "description": "The request JSON is not well formed."
+    }
+  ],
+  "links": [
+    {
+      "href": "https://developer.paypal.com/docs/api/orders/v2/#error-MALFORMED_REQUEST_JSON",
+      "rel": "information_link",
+      "encType": "application/json"
+    }
+  ]
+}
