@@ -8,6 +8,17 @@ due to poor Google skills.) - so I built this.
 
 The documentation for the API which this package uses can be found here: https://developer.paypal.com/docs/api/payments/v2/
 
+A full write-up of this package is also available here: https://drewdan.co.uk/articles/laravel-paypal-package
+
+## Requirements
+
+| Package | Version |
+| ------- | ------- |
+| PHP | 8.2, 8.3, 8.4, 8.5 |
+| Laravel | 10.x, 11.x, 12.x, 13.x |
+
+Note: Laravel 13.x requires PHP 8.3 or higher.
+
 ## Installation
 
 This is best installed by composer:

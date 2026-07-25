@@ -13,7 +13,6 @@ class OrderTest extends TestCase {
 
 	use WithFaker;
 
-	/** @test */
 	public function testCreatingCharge() {
 		Http::fake([
 			'*' => Http::response($this->getApiResponse('order_created')),
@@ -43,7 +42,6 @@ class OrderTest extends TestCase {
 		$this->assertEquals($order->id, $this->getApiResponse('order_created', false)->id);
 	}
 
-	/** @test */
 	public function testRetrievingOrder() {
 		$id = $this->faker->word;
 

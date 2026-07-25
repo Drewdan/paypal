@@ -8,7 +8,6 @@ use Drewdan\Paypal\Services\Payments\Captures;
 
 class CapturesTest extends TestCase {
 
-	/** @test */
 	public function testTheCaptureIsReturned() {
 		Http::fake([
 			'*' => Http::response($this->getApiResponse('capture')),
@@ -21,7 +20,6 @@ class CapturesTest extends TestCase {
 		$this->assertEquals('COMPLETED', $capture->status);
 	}
 
-	/** @test */
 	public function testThePaymentIsRefunded() {
 		$data = $this->getApiResponse('capture_refund');
 

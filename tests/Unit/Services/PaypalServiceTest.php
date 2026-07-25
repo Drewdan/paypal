@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Http;
 use Drewdan\Paypal\Services\PaypalService;
 use Drewdan\Paypal\Exceptions\InvalidClientException;
 use Drewdan\Paypal\Exceptions\InvalidRequestException;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class PaypalServiceTest extends TestCase {
 
@@ -17,10 +18,7 @@ class PaypalServiceTest extends TestCase {
 		];
 	}
 
-	/**
-	 * @test
-	 * @dataProvider exceptionProvider
-	 */
+	#[DataProvider('exceptionProvider')]
 	public function testCanCatchInvalidRequestExceptionWhenThrown($responseType, $responseCode, $exceptionType) {
 		Http::fake([
 			'https://api-m.paypal.com/v2/checkout/orders' => Http::response(
