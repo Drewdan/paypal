@@ -9,6 +9,7 @@ use Drewdan\Paypal\Orders\Models\Order;
 use Drewdan\Paypal\Webhooks\Models\WebhookEvent;
 use Drewdan\Paypal\Webhooks\Enums\WebhookEventEnum;
 use Drewdan\Paypal\Webhooks\Handlers\DefaultWebhookHandler;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class PaypalWebhookControllerTest extends TestCase {
 	public function testItCanFindHandlerAndRunsIt() {
@@ -49,10 +50,7 @@ class PaypalWebhookControllerTest extends TestCase {
 		];
 	}
 
-	/**
-	 * @dataProvider webhookProvider
-	 *
-	 */
+	#[DataProvider('webhookProvider')]
 	public function testItCanParseWebhookFormatForGivenWebhook(string $payloadRef, WebhookEventEnum $enum, string $resourceClass) {
 		$payload = $this->getApiResponse('webhooks/' . $payloadRef);
 
